@@ -10,11 +10,7 @@ import {
     useRoom,
 } from '@liveblocks/react';
 
-// NOTE: This API would eventually ship as part of @liveblocks/react
-// import LobbyProvider from '../components/LobbyRoomProvider';
-
 const clientWithLobby = createClient({
-    // publicApiKey: 'pk_live_Sf45D7fVoAF-LS1W147UpWin',
     publicApiKey: 'pk_live_RDJ5o8YOqpf09PNj4TuNn1LK',
 
     // @ts-ignore
