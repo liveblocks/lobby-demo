@@ -1,23 +1,116 @@
-import Layout from '../components/Layout';
 import { createClient } from '@liveblocks/client';
+import Cursor from '../components/Cursor';
 import { getBgColorForRoom } from '../utils';
-import { LiveblocksProvider, useRoom, RoomProvider } from '@liveblocks/react';
+import {
+    LiveblocksProvider,
+    RoomProvider,
+    useMyPresence,
+    useOthers,
+    useRoom,
+} from '@liveblocks/react';
 
 const client = createClient({ publicApiKey: 'pk_live_Sf45D7fVoAF-LS1W147UpWin' });
 
-function initialPresence(roomId: string) {
+type Cursor = {
+    x: number;
+    y: number;
+};
+
+type Presence = {
+    bgColor: string;
+    cursor: Cursor | null;
+};
+
+function initialPresence(roomId: string): Presence {
     return {
-        bg: getBgColorForRoom(roomId),
-        cursor: { x: 0, y: 0 },
+        bgColor: getBgColorForRoom(roomId),
+        cursor: null,
+        state: 'idle',
     };
 }
 
-function CursorsPage() {
+// Flying cursor colors
+const COLORS = [
+    '#E57373',
+    '#9575CD',
+    '#4FC3F7',
+    '#81C784',
+    '#FFF176',
+    '#FF8A65',
+    '#F06292',
+    '#7986CB',
+];
+
+function CursorDemo() {
     const room = useRoom();
+
+    /**
+     * useMyPresence returns the presence of the current user and a function to update it.
+     * updateMyPresence is different than the setState function returned by the useState hook from React.
+     * You don't need to pass the full presence object to update it.
+     * See https://liveblocks.io/docs/api-reference/liveblocks-react#useMyPresence for more information
+     */
+    const [me, updateMyPresence] = useMyPresence<Presence>();
+
+    /**
+     * Return all the other users in the room and their presence (a cursor position in this case)
+     */
+    const others = useOthers<Presence>();
+
     return (
-        <Layout title="Sheet">
-            Hi there, you're in room <strong>{room.id}</strong>!
-        </Layout>
+        <main
+            className="relative w-full h-screen flex place-content-center place-items-center"
+            style={{ backgroundColor: me.bgColor }}
+            onPointerMove={(event) =>
+                // Update the user cursor position on every pointer move
+                updateMyPresence({
+                    cursor: {
+                        x: Math.round(event.clientX),
+                        y: Math.round(event.clientY),
+                    },
+                })
+            }
+            onPointerLeave={() =>
+                // When the pointer goes out, set cursor to null
+                updateMyPresence({
+                    cursor: null,
+                })
+            }>
+            <div className="max-w-sm text-center space-y-5">
+                <p>
+                    You are currently connected to room
+                    <br />
+                    <strong>{room.id}</strong>.
+                </p>
+                <p>
+                    {me.cursor
+                        ? `${me.cursor.x} × ${me.cursor.y}`
+                        : 'Move your cursor to broadcast its position to other people in the room.'}
+                </p>
+            </div>
+
+            {
+                /**
+                 * Iterate over other users and display a cursor based on their presence
+                 */
+                others.map(({ connectionId, presence }) => {
+                    if (presence == null || presence.cursor == null) {
+                        return null;
+                    }
+
+                    return (
+                        <Cursor
+                            key={`cursor-${connectionId}`}
+                            // connectionId is an integer that is incremented at every new connections
+                            // Assigning a color with a modulo makes sure that a specific user has the same colors on every clients
+                            color={COLORS[connectionId % COLORS.length]}
+                            x={presence.cursor.x}
+                            y={presence.cursor.y}
+                        />
+                    );
+                })
+            }
+        </main>
     );
 }
 
@@ -25,7 +118,7 @@ const StaticPropsDetail = () => {
     return (
         <LiveblocksProvider client={client}>
             <RoomProvider id="conference-demo" initialPresence={initialPresence}>
-                <CursorsPage />
+                <CursorDemo />
             </RoomProvider>
         </LiveblocksProvider>
     );
