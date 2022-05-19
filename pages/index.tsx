@@ -1,24 +1,12 @@
 import { createClient } from '@liveblocks/client';
 import Cursor from '../components/Cursor';
-import { getBgColorFromHash } from '../utils';
-import {
-    LiveblocksProvider,
-    useSelf,
-    RoomProvider,
-    useMyPresence,
-    useOthers,
-    useRoom,
-} from '@liveblocks/react';
+import { getBgColorForRoom } from '../utils';
+import { LiveblocksProvider, useMyPresence, useOthers, useRoom } from '@liveblocks/react';
 
-const clientWithLobby = createClient({
-    publicApiKey: 'pk_live_RDJ5o8YOqpf09PNj4TuNn1LK',
+// NOTE: This API would eventually ship as part of @liveblocks/react
+import LobbyProvider from '../components/LobbyRoomProvider';
 
-    // @ts-ignore
-    publicAuthorizeEndpoint: 'https://development.liveblocks.io/api/public/authorize',
-
-    // @ts-ignore
-    liveblocksServer: 'wss://dev.liveblocks.workers.dev/custom',
-});
+const client = createClient({ publicApiKey: 'pk_live_Sf45D7fVoAF-LS1W147UpWin' });
 
 type Cursor = {
     x: number;
@@ -54,7 +42,6 @@ function CursorDemo() {
      * You don't need to pass the full presence object to update it.
      * See https://liveblocks.io/docs/api-reference/liveblocks-react#useMyPresence for more information
      */
-    const me = useSelf();
     const [, updateMyPresence] = useMyPresence<Presence>();
 
     /**
@@ -65,14 +52,7 @@ function CursorDemo() {
     return (
         <main
             className="relative w-full h-screen flex place-content-center place-items-center"
-            style={{
-                backgroundColor: getBgColorFromHash(
-                    [...others.map((u) => u.connectionId), me?.connectionId]
-                        .filter(Boolean)
-                        .sort()
-                        .join(','),
-                ),
-            }}
+            style={{ backgroundColor: getBgColorForRoom(room.id) }}
             onPointerMove={(event) =>
                 // Update the user cursor position on every pointer move
                 updateMyPresence({
@@ -130,10 +110,16 @@ function CursorDemo() {
 
 const StaticPropsDetail = () => {
     return (
-        <LiveblocksProvider client={clientWithLobby}>
-            <RoomProvider id="lobby-demo" initialPresence={initialPresence}>
+        <LiveblocksProvider client={client}>
+            {/*
+                // Classic setup!
+                <RoomProvider id="demo" initialPresence={initialPresence}>
+                    <CursorDemo />
+                </RoomProvider>
+            */}
+            <LobbyProvider lobbyId="demo" initialPresence={initialPresence}>
                 <CursorDemo />
-            </RoomProvider>
+            </LobbyProvider>
         </LiveblocksProvider>
     );
 };
