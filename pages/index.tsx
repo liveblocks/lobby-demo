@@ -12,15 +12,11 @@ type Cursor = {
 };
 
 type Presence = {
-    bgColor: string;
     cursor: Cursor | null;
 };
 
 function initialPresence(roomId: string): Presence {
-    return {
-        bgColor: getBgColorForRoom(roomId),
-        cursor: null,
-    };
+    return { cursor: null };
 }
 
 // Flying cursor colors
@@ -44,7 +40,7 @@ function CursorDemo() {
      * You don't need to pass the full presence object to update it.
      * See https://liveblocks.io/docs/api-reference/liveblocks-react#useMyPresence for more information
      */
-    const [me, updateMyPresence] = useMyPresence<Presence>();
+    const [, updateMyPresence] = useMyPresence<Presence>();
 
     /**
      * Return all the other users in the room and their presence (a cursor position in this case)
@@ -54,7 +50,7 @@ function CursorDemo() {
     return (
         <main
             className="relative w-full h-screen flex place-content-center place-items-center"
-            style={{ backgroundColor: me.bgColor }}
+            style={{ backgroundColor: getBgColorForRoom(room.id) }}
             onPointerMove={(event) =>
                 // Update the user cursor position on every pointer move
                 updateMyPresence({

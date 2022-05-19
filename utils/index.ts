@@ -18,5 +18,5 @@ function hashCode(str: string): number {
 }
 
 export function getBgColorForRoom(roomId: string): string {
-    return BG_COLORS[hashCode(roomId) % BG_COLORS.length];
+    return BG_COLORS[Math.abs(hashCode(roomId)) % BG_COLORS.length];
 }
