@@ -3,7 +3,7 @@ import redis from '../../../../lib/redis';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const lobbyId = req.query.lobbyId as string;
-    await redis.del(`${lobbyId}:rooms`);
+    await redis.del(lobbyId);
     res.status(200).json({ ok: true });
 };
 

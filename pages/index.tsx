@@ -1,13 +1,8 @@
 import { createClient } from '@liveblocks/client';
 import Cursor from '../components/Cursor';
+import LobbyProvider from '../components/LobbyRoomProvider';
 import { getBgColorForRoom } from '../utils';
-import {
-    LiveblocksProvider,
-    RoomProvider,
-    useMyPresence,
-    useOthers,
-    useRoom,
-} from '@liveblocks/react';
+import { LiveblocksProvider, useMyPresence, useOthers, useRoom } from '@liveblocks/react';
 
 const client = createClient({ publicApiKey: 'pk_live_Sf45D7fVoAF-LS1W147UpWin' });
 
@@ -114,11 +109,13 @@ function CursorDemo() {
 }
 
 const StaticPropsDetail = () => {
+    // <RoomProvider id="conference-demo" initialPresence={initialPresence}>
+    // </RoomProvider>
     return (
         <LiveblocksProvider client={client}>
-            <RoomProvider id="conference-demo" initialPresence={initialPresence}>
+            <LobbyProvider lobbyId="conference-demo" initialPresence={initialPresence}>
                 <CursorDemo />
-            </RoomProvider>
+            </LobbyProvider>
         </LiveblocksProvider>
     );
 };
