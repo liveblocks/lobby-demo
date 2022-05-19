@@ -1,12 +1,27 @@
 import { createClient } from '@liveblocks/client';
 import Cursor from '../components/Cursor';
 import { getBgColorForRoom } from '../utils';
-import { LiveblocksProvider, useMyPresence, useOthers, useRoom } from '@liveblocks/react';
+import {
+    LiveblocksProvider,
+    RoomProvider,
+    useMyPresence,
+    useOthers,
+    useRoom,
+} from '@liveblocks/react';
 
 // NOTE: This API would eventually ship as part of @liveblocks/react
-import LobbyProvider from '../components/LobbyRoomProvider';
+// import LobbyProvider from '../components/LobbyRoomProvider';
 
-const client = createClient({ publicApiKey: 'pk_live_Sf45D7fVoAF-LS1W147UpWin' });
+const clientWithLobby = createClient({
+    // publicApiKey: 'pk_live_Sf45D7fVoAF-LS1W147UpWin',
+    publicApiKey: 'pk_live_RDJ5o8YOqpf09PNj4TuNn1LK',
+
+    // @ts-ignore
+    publicAuthorizeEndpoint: 'https://development.liveblocks.io/api/public/authorize',
+
+    // @ts-ignore
+    liveblocksServer: 'wss://dev.liveblocks.workers.dev/custom',
+});
 
 type Cursor = {
     x: number;
@@ -110,16 +125,15 @@ function CursorDemo() {
 
 const StaticPropsDetail = () => {
     return (
-        <LiveblocksProvider client={client}>
+        <LiveblocksProvider client={clientWithLobby}>
+            <RoomProvider id="demo" initialPresence={initialPresence}>
+                <CursorDemo />
+            </RoomProvider>
             {/*
-                // Classic setup!
-                <RoomProvider id="demo" initialPresence={initialPresence}>
-                    <CursorDemo />
-                </RoomProvider>
-            */}
             <LobbyProvider lobbyId="demo" initialPresence={initialPresence}>
                 <CursorDemo />
             </LobbyProvider>
+            */}
         </LiveblocksProvider>
     );
 };
