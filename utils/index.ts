@@ -1,3 +1,14 @@
+const BG_COLORS = [
+    '#ecbab3',
+    '#faf3d3',
+    '#dbf4e4',
+    '#f0c67d',
+    '#d3bedf',
+    '#92bfe5',
+    '#d6dbdb',
+    '#98deae',
+];
+
 function hashCode(str: string): number {
     let hash = 0;
     for (var i = 0; i < str.length; i++) {
@@ -6,11 +17,6 @@ function hashCode(str: string): number {
     return hash;
 }
 
-function intToRGB(i: number): string {
-    let c = (i & 0x00ffffff).toString(16).toUpperCase();
-    return '#' + ('00000'.substring(0, 6 - c.length) + c);
-}
-
 export function getBgColorForRoom(roomId: string): string {
-    return intToRGB(hashCode(roomId));
+    return BG_COLORS[hashCode(roomId) % BG_COLORS.length];
 }
