@@ -25,7 +25,6 @@ function initialPresence(roomId: string): Presence {
     return {
         bgColor: getBgColorForRoom(roomId),
         cursor: null,
-        state: 'idle',
     };
 }
 
