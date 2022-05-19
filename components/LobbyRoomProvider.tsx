@@ -16,9 +16,7 @@ async function fetcher(lobbyId: string): Promise<string> {
 }
 
 /**
- * Makes a Room available in the component hierarchy below.
- * When this component is unmounted, the current user leave the room.
- * That means that you can't have 2 RoomProvider with the same room id in your react tree.
+ * NOTE: This API may eventually be shipped as part of @liveblocks/react.
  */
 export default function LobbyProvider<TStorage extends Record<string, unknown>>(
     props: LobbyProviderProps<TStorage>,
@@ -32,15 +30,16 @@ export default function LobbyProvider<TStorage extends Record<string, unknown>>(
     React.useEffect(() => {
         console.log({ lobbyId, roomId });
         if (roomId) {
-            window.addEventListener('beforeunload', () => {
-                if (!sent.current) {
-                    sent.current = true;
-                    /* no await */ fetch(`/api/lobby/${lobbyId}/${roomId}/left`);
-                }
-            });
-
             /* no await */ fetch(`/api/lobby/${lobbyId}/${roomId}/entered`);
 
+            // NOTE: Explicitly telling our API (and thus Redis) that a user
+            // left can be unreliable. It works if this component is unmounted
+            // in the React way, but not if a user closes a browser tab,
+            // because that will not trigger an unmount. Also, browsers may not
+            // get a chance to send any HTTP requests anymore anyway. To make
+            // this more resilient, you may need to periodically poll the
+            // /api/rooms/:roomId/users endpoint and pull active user counts
+            // from there.
             return () => {
                 if (!sent.current) {
                     sent.current = true;

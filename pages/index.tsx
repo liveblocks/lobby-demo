@@ -17,9 +17,7 @@ type Presence = {
     cursor: Cursor | null;
 };
 
-function initialPresence(roomId: string): Presence {
-    return { cursor: null };
-}
+const initialPresence: Presence = { cursor: null };
 
 // Flying cursor colors
 const COLORS = [
