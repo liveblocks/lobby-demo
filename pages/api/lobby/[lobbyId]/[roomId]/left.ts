@@ -5,7 +5,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const lobbyId = req.query.lobbyId as string;
     const roomId = req.query.roomId as string;
 
-    // TODO: Replace this by some real placement logic
     const results = await redis
         .multi()
         .zincrby(lobbyId, -1, roomId)
