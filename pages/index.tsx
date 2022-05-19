@@ -135,14 +135,9 @@ function CursorDemo() {
 const StaticPropsDetail = () => {
     return (
         <LiveblocksProvider client={clientWithLobby}>
-            <RoomProvider id="demo" initialPresence={initialPresence}>
+            <RoomProvider id="lobby-demo" initialPresence={initialPresence}>
                 <CursorDemo />
             </RoomProvider>
-            {/*
-            <LobbyProvider lobbyId="demo" initialPresence={initialPresence}>
-                <CursorDemo />
-            </LobbyProvider>
-            */}
         </LiveblocksProvider>
     );
 };
