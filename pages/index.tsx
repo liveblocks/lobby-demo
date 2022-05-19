@@ -74,7 +74,11 @@ function CursorDemo() {
                 <p>
                     You are currently connected to room
                     <br />
-                    <strong>{room.id}</strong>.
+                    <code className="text-sm font-bold">{room.id}</code>.
+                </p>
+                <p>
+                    There are <strong>{others.count}</strong> others here in this room
+                    with you.
                 </p>
                 <p>
                     {me.cursor
