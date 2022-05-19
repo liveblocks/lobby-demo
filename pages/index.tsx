@@ -1,8 +1,10 @@
 import { createClient } from '@liveblocks/client';
 import Cursor from '../components/Cursor';
-import LobbyProvider from '../components/LobbyRoomProvider';
 import { getBgColorForRoom } from '../utils';
 import { LiveblocksProvider, useMyPresence, useOthers, useRoom } from '@liveblocks/react';
+
+// NOTE: This API would eventually ship as part of @liveblocks/react
+import LobbyProvider from '../components/LobbyRoomProvider';
 
 const client = createClient({ publicApiKey: 'pk_live_Sf45D7fVoAF-LS1W147UpWin' });
 
