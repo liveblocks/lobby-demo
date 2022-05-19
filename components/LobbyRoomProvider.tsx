@@ -23,7 +23,7 @@ async function fetcher(lobbyId: string): Promise<string> {
 export default function LobbyProvider<TStorage extends Record<string, unknown>>(
     props: LobbyProviderProps<TStorage>,
 ): JSX.Element | null {
-    const { lobbyId } = props;
+    const { lobbyId, initialPresence } = props;
     const roomIdResult = useAsync(fetcher, [lobbyId]);
 
     const roomId = roomIdResult.result;
@@ -52,9 +52,7 @@ export default function LobbyProvider<TStorage extends Record<string, unknown>>(
 
     if (roomIdResult.result) {
         return (
-            <RoomProvider
-                id={roomIdResult.result}
-                initialPresence={props.initialPresence}>
+            <RoomProvider id={roomIdResult.result} initialPresence={initialPresence}>
                 {props.children}
             </RoomProvider>
         );

@@ -70,20 +70,18 @@ function CursorDemo() {
                     cursor: null,
                 })
             }>
-            <div className="max-w-sm text-center space-y-5">
-                <p>
-                    You are currently connected to room
-                    <br />
-                    <code className="text-sm font-bold">{room.id}</code>.
-                </p>
-                <p>
-                    There are <strong>{others.count}</strong> others here in this room
-                    with you.
-                </p>
-                <p>
-                    {me.cursor
-                        ? `${me.cursor.x} × ${me.cursor.y}`
-                        : 'Move your cursor to broadcast its position to other people in the room.'}
+            <div className="max-w-sm h-32 text-center space-y-5">
+                {others.count === 0 ? (
+                    <p>You are currently alone in this room.</p>
+                ) : (
+                    <p>
+                        You are in this room together with <strong>{others.count}</strong>{' '}
+                        others. Move your cursor to say hi to them!
+                    </p>
+                )}
+                <p className="text-sm">
+                    You were auto-assigned to room{' '}
+                    <code className="text-xs font-bold">{room.id}</code>.
                 </p>
             </div>
 
