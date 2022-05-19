@@ -1,8 +1,9 @@
 import { createClient } from '@liveblocks/client';
 import Cursor from '../components/Cursor';
-import { getBgColorForRoom } from '../utils';
+import { getBgColorFromHash } from '../utils';
 import {
     LiveblocksProvider,
+    useSelf,
     RoomProvider,
     useMyPresence,
     useOthers,
@@ -57,6 +58,7 @@ function CursorDemo() {
      * You don't need to pass the full presence object to update it.
      * See https://liveblocks.io/docs/api-reference/liveblocks-react#useMyPresence for more information
      */
+    const me = useSelf();
     const [, updateMyPresence] = useMyPresence<Presence>();
 
     /**
@@ -67,7 +69,14 @@ function CursorDemo() {
     return (
         <main
             className="relative w-full h-screen flex place-content-center place-items-center"
-            style={{ backgroundColor: getBgColorForRoom(room.id) }}
+            style={{
+                backgroundColor: getBgColorFromHash(
+                    [...others.map((u) => u.connectionId), me?.connectionId]
+                        .filter(Boolean)
+                        .sort()
+                        .join(','),
+                ),
+            }}
             onPointerMove={(event) =>
                 // Update the user cursor position on every pointer move
                 updateMyPresence({
