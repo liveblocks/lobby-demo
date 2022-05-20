@@ -3,7 +3,7 @@
 This project illustrates the Lobby room concept that we're currently prototyping and
 testing out. 
 
-This is using Redis to keep track of how many users are in each room and to find the least occupied room in the lobby (or create new one if every rooms are full).
+This uses Redis to track how many users are in each room and find the least occupied room in the lobby (or create a new one if every room is full).
 
 Currently limited to 3 users per room (configured in /api/lobby/[lobbyId]/index.ts).
 
