@@ -6,7 +6,9 @@ import { LiveblocksProvider, useMyPresence, useOthers, useRoom } from '@livebloc
 // NOTE: This API would eventually ship as part of @liveblocks/react
 import LobbyProvider from '../components/LobbyRoomProvider';
 
-const client = createClient({ publicApiKey: 'pk_live_Sf45D7fVoAF-LS1W147UpWin' });
+const client = createClient({ 
+    publicApiKey: 'pk_live_Mbzpk5Pk3147D0jgDvycwtXr', 
+});
 
 type Cursor = {
     x: number;

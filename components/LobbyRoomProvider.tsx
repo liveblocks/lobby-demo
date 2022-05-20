@@ -38,8 +38,10 @@ export default function LobbyProvider<TStorage extends Record<string, unknown>>(
             // because that will not trigger an unmount. Also, browsers may not
             // get a chance to send any HTTP requests anymore anyway. To make
             // this more resilient, you may need to periodically poll the
-            // /api/rooms/:roomId/users endpoint and pull active user counts
+            // https://liveblocks.net/api/v1/room/:roomId/users endpoint and pull active user counts
             // from there.
+            //
+            // See /api/lobby/[lobbyId]/sync.ts for more info
             return () => {
                 if (!sent.current) {
                     sent.current = true;
