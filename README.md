@@ -1,7 +1,5 @@
 <p align="center">
-  <a href="https://liveblocks.io">
-    <img src="./public/images/gif-room-lobby@2x.gif" alt="Lobby enabling automatic room assignment" />
-  </a>
+  <img src="./public/images/gif-room-lobby@2x.gif" alt="Lobby enabling automatic room assignment" />
 </p>
 
 # Early lobby concept demo by Liveblocks
