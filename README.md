@@ -1,9 +1,16 @@
+<p align="center">
+  <a href="https://liveblocks.io">
+    <img src="./public/images/gif-room-lobby@2x.gif" alt="Lobby enabling automatic room assignment" />
+  </a>
+</p>
+
 # Early lobby concept demo by Liveblocks
 
 This project illustrates the Lobby room concept that we're currently prototyping and
-testing out. 
+testing out.
 
-This uses Redis to track how many users are in each room and find the least occupied room in the lobby (or create a new one if every room is full).
+This uses Redis to track how many users are in each room and find the least occupied room
+in the lobby (or create a new one if every room is full).
 
 Currently limited to 3 users per room (configured in /api/lobby/[lobbyId]/index.ts).
 
@@ -30,7 +37,8 @@ And start a new redis server locally with
 redis-server
 ```
 
-If you're using a different stack, use one of the other setup guides: https://redis.io/docs/getting-started/
+If you're using a different stack, use one of the other setup guides:
+https://redis.io/docs/getting-started/
 
 ### Start your next app
 
